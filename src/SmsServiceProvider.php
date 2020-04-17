@@ -14,7 +14,15 @@ class SmsServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom($this->configPath(), 'sms1');
+        $this->app->singleton('seffeng.laravel.sms', function ($app) {
+            $config = $app['config']->get('sms');
+
+            if ($config && is_array($config)) {
+                return new Sms($config);
+            } else {
+                throw new \RuntimeException('Please execute the command `php artisan vendor:publish --provider="Seffeng\LaravelSms\SmsServiceProvider"` first to  generate sms configuration file.');
+            }
+        });
     }
 
     /**
@@ -24,7 +32,7 @@ class SmsServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
-        if ($this->app instanceof LaravelApplication && $this->app->runningInConsole()) {
+        if ($this->app->runningInConsole() && $this->app instanceof LaravelApplication) {
             $this->publishes([$this->configPath() => config_path('sms.php')]);
         }
     }
