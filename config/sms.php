@@ -3,7 +3,7 @@
 return [
 
     /**
-     * 调试模式[true-不发送短信]
+     * 调试模式[false-发送短信，true-不发送短信]
      */
     'debug' => env('SMS_DEBUG', true),
 

@@ -99,4 +99,4 @@ class TemplateParams extends \Seffeng\Sms\Clients\Aliyun\TemplateParams
 
 ### 备注
 
-无
+1、测试脚本 tests/SmsTest.php 仅作为示例供参考。

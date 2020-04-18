@@ -13,7 +13,7 @@ class Sms
      *
      * @var boolean
      */
-    private $debug = true;
+    private $debug;
 
     /**
      *
@@ -148,6 +148,6 @@ class Sms
      */
     public function getIsDebug()
     {
-        return $this->debug;
+        return ($this->debug === false) ? false : true;
     }
 }
