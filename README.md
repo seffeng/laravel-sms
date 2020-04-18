@@ -3,13 +3,13 @@
 ### 安装
 
 ```shell
-# 暂时支持 阿里云 和 腾讯云 发送短信
+# 1、暂时支持 阿里云 和 腾讯云 发送短信
 $ composer require seffeng/laravel-sms
 
-# 生成配置文件
+# 2、生成配置文件
 $ php artisan vendor:publish --provider="Seffeng\LaravelSms\SmsServiceProvider"
 
-# 修改配置文件 /config/sms.php 或 /.env，建议通过修改 .env 实现配置
+# 3、修改配置文件 /config/sms.php 或 /.env，建议通过修改 .env 实现配置
 ```
 
 ### 目录说明
@@ -40,9 +40,26 @@ class SiteController extends Controller
     public function send()
     {
         try {
-            $service = Sms::setTemplateCode(config('sms.template.captcha'))->setTemplateParamsModel(new TemplateParams());
-            $result = $service->send('13800138000', ['111111']);
-            var_dump($result);
+            // 腾讯云 templateId[1234] 或 阿里云 TemplateCode[SMS_153055065]
+            $tempCode = config('sms.template.captcha');
+
+            // 腾讯云 ['111111'] 或 阿里云 ['code' => '111111']
+            // 阿里云 ['111111'] 可通过匹配 TemplateParams::fetchNameItems()  实现发送
+            $content = ['111111'];
+
+            // 相同内容可批量发送['13800138000', '13800138001']
+            $phone = '13800138000';
+
+            // 因阿里云与腾讯云的内容参数结构不一致，参考 $content；可通过 TemplateParams 实现以腾讯云结构发送
+            $templateParamsModel = new TemplateParams();
+            $service = Sms::setTemplateCode($tempCode)->setTemplateParamsModel($templateParamsModel);
+            $result = $service->send($phone, $content);
+
+            if ($result) {
+                echo '发送成功！';
+            } else {
+                echo '发送失败！';
+            }
         } catch (SmsException $e) {
             throw $e;
         } catch (\Exception $e) {
@@ -74,9 +91,12 @@ class TemplateParams extends \Seffeng\Sms\Clients\Aliyun\TemplateParams
 }
 ```
 
+## 项目依赖
 
+| 依赖        | 仓库地址                       | 备注 |
+| :---------- | :----------------------------- | :--- |
+| seffeng/sms | https://github.com/seffeng/sms | 无   |
 
 ### 备注
 
-暂不可用
-
+无

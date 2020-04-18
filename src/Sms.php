@@ -70,12 +70,11 @@ class Sms
         $this->accessKeyId = ArrayHelper::getValue($config, 'accessKeyId');
         $this->accessKeySecret = ArrayHelper::getValue($config, 'accessKeySecret');
         $this->sdkAppId = ArrayHelper::getValue($config, 'sdkAppId');
-        var_dump($this->sdkAppId);exit;
         $this->signname = ArrayHelper::getValue($config, 'signname');
 
         if (is_null($this->client) || is_null($this->accessKeyId) || is_null($this->accessKeySecret) || is_null($this->signname))
         {
-            throw new \RuntimeException('Warning: client, accesskeyid, accesskeysecret, signname cannot be empty.');
+            throw new SmsException('Warning: client, accesskeyid, accesskeysecret, signname cannot be empty.');
         }
     }
 
