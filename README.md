@@ -5,11 +5,24 @@
 ```shell
 # 1、暂时支持 阿里云 和 腾讯云 发送短信
 $ composer require seffeng/laravel-sms
+```
 
-# 2、生成配置文件
+##### Laravel
+
+```shell
+# 1、生成配置文件
 $ php artisan vendor:publish --provider="Seffeng\LaravelSms\SmsServiceProvider"
 
-# 3、修改配置文件 /config/sms.php 或 /.env，建议通过修改 .env 实现配置
+# 2、修改配置文件 /config/sms.php 或 /.env，建议通过修改 .env 实现配置
+```
+
+##### Lumen
+
+```php
+# 1、将以下代码段添加到 /bootstrap/app.php 文件中的 Providers 部分
+$app->register(Seffeng\LaravelSms\SmsServiceProvider::class);
+
+# 2、参考扩展包内 config/sms.php 在 .env 文件中添加配置
 ```
 
 ### 目录说明

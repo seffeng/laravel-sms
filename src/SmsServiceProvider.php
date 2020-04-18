@@ -3,6 +3,7 @@
 namespace Seffeng\LaravelSms;
 
 use Illuminate\Foundation\Application as LaravelApplication;
+use Laravel\Lumen\Application as LumenApplication;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Seffeng\Sms\Exceptions\SmsException;
 
@@ -16,6 +17,7 @@ class SmsServiceProvider extends BaseServiceProvider
     public function register()
     {
         $this->registerAliases();
+        $this->mergeConfigFrom($this->configPath(), 'sms');
 
         $this->app->singleton('seffeng.laravel.sms', function ($app) {
             $config = $app['config']->get('sms');
@@ -37,6 +39,8 @@ class SmsServiceProvider extends BaseServiceProvider
     {
         if ($this->app->runningInConsole() && $this->app instanceof LaravelApplication) {
             $this->publishes([$this->configPath() => config_path('sms.php')]);
+        } elseif ($this->app instanceof LumenApplication) {
+            $this->app->configure('sms');
         }
     }
 
