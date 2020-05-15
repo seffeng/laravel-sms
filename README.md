@@ -11,6 +11,8 @@ $ composer require seffeng/laravel-sms
 
 ```shell
 # 1、生成配置文件
+$ php artisan vendor:publish --tag="sms"
+# 或
 $ php artisan vendor:publish --provider="Seffeng\LaravelSms\SmsServiceProvider"
 
 # 2、修改配置文件 /config/sms.php 或 /.env，建议通过修改 .env 实现配置，

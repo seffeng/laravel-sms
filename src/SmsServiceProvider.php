@@ -38,7 +38,7 @@ class SmsServiceProvider extends BaseServiceProvider
     public function boot()
     {
         if ($this->app->runningInConsole() && $this->app instanceof LaravelApplication) {
-            $this->publishes([$this->configPath() => config_path('sms.php')]);
+            $this->publishes([$this->configPath() => config_path('sms.php')], 'sms');
         } elseif ($this->app instanceof LumenApplication) {
             $this->app->configure('sms');
         }
