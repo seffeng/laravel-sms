@@ -24,6 +24,7 @@ SMS_TEMPLATE_CAPTCHA=
 
 ```php
 # 使用腾讯云时需要额外配置
+SMS_CLIENT=qcloud #[aliyun-阿里云, qcloud-腾讯云]
 SMS_SDK_APPID=
 ```
 
