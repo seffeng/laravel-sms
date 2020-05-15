@@ -14,12 +14,17 @@ $ composer require seffeng/laravel-sms
 $ php artisan vendor:publish --provider="Seffeng\LaravelSms\SmsServiceProvider"
 
 # 2、修改配置文件 /config/sms.php 或 /.env，建议通过修改 .env 实现配置，
-SMS_DEBUG=true
-SMS_APPID=
-SMS_APPSECRET=
+SMS_DEBUG= #[false-发送短信，true-不发送短信]
+SMS_ACCESS_KEY_ID=
+SMS_ACCESS_KEY_SECRET=
 SMS_SIGNNAME=
 SMS_TEMPLATE_CAPTCHA=
 #/config/sms.php中添加其他模板
+```
+
+```php
+# 使用腾讯云时需要额外配置
+SMS_SDK_APPID=
 ```
 
 ##### Lumen
@@ -29,9 +34,9 @@ SMS_TEMPLATE_CAPTCHA=
 $app->register(Seffeng\LaravelSms\SmsServiceProvider::class);
 
 # 2、参考扩展包内 config/sms.php 在 .env 文件中添加配置
-SMS_DEBUG=true
-SMS_APPID=
-SMS_APPSECRET=
+SMS_DEBUG= #[false-发送短信，true-不发送短信]
+SMS_ACCESS_KEY_ID=
+SMS_ACCESS_KEY_SECRET=
 SMS_SIGNNAME=
 SMS_TEMPLATE_CAPTCHA=
 #......
