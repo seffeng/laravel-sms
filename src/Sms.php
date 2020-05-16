@@ -67,12 +67,12 @@ class Sms
     {
         $this->debug = ArrayHelper::getValue($config, 'debug');
         $this->client = ArrayHelper::getValue($config, 'client');
-        $this->accessKeyId = ArrayHelper::getValue($config, 'accessKeyId');
-        $this->accessKeySecret = ArrayHelper::getValue($config, 'accessKeySecret');
-        $this->sdkAppId = ArrayHelper::getValue($config, 'sdkAppId');
-        $this->signname = ArrayHelper::getValue($config, 'signname');
-        $templateParamsModel = ArrayHelper::getValue($config, 'templateParamsModel');
-        
+        $this->accessKeyId = ArrayHelper::getValue($config, 'clients.'. $this->client .'.accessKeyId');
+        $this->accessKeySecret = ArrayHelper::getValue($config, 'clients.'. $this->client .'.accessKeySecret');
+        $this->sdkAppId = ArrayHelper::getValue($config, 'clients.'. $this->client .'.sdkAppId', '');
+        $this->signname = ArrayHelper::getValue($config, 'clients.'. $this->client .'.signname');
+        $templateParamsModel = ArrayHelper::getValue($config, 'clients.'. $this->client .'.templateParamsModel');
+
         if ($templateParamsModel && class_exists($templateParamsModel)) {
             $this->setTemplateParamsModel(new $templateParamsModel);
         }
