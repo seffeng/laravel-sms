@@ -29,9 +29,13 @@ class SmsTest extends TestCase
             $phone = '13800138000';
 
             // 因阿里云与腾讯云的内容参数结构不一致，参考 $content；可通过 TemplateParams 实现以腾讯云结构发送
+            // 可通过 /config/sms.php 配置 templateParamsModel 或者 setTemplateParamsModel 实现
+            /*
             $templateParamsModel = new TemplateParams();
             $service = Sms::setTemplateCode($tempCode)->setTemplateParamsModel($templateParamsModel);
             $result = $service->send($phone, $content);
+            */
+            $result = Sms::setTemplateCode($tempCode)->send($phone, $content);
 
             if ($result) {
                 echo '发送成功！';

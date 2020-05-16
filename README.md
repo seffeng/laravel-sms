@@ -25,7 +25,10 @@ SMS_TEMPLATE_CAPTCHA=
 ```
 
 ```php
-# 使用腾讯云时需要额外配置
+# 注意
+## 1、使用阿里云时注意 /config/sms.php 中 templateParamsModel 配置
+
+## 2、使用腾讯云时需要额外配置
 SMS_CLIENT=qcloud #[aliyun-阿里云, qcloud-腾讯云]
 SMS_SDK_APPID=
 ```
@@ -84,9 +87,13 @@ class SiteController extends Controller
             $phone = '13800138000';
 
             // 因阿里云与腾讯云的内容参数结构不一致，参考 $content；可通过 TemplateParams 实现以腾讯云结构发送
+            // 可通过 /config/sms.php 配置 templateParamsModel 或者 setTemplateParamsModel() 实现
+            /*
             $templateParamsModel = new TemplateParams();
             $service = Sms::setTemplateCode($tempCode)->setTemplateParamsModel($templateParamsModel);
             $result = $service->send($phone, $content);
+            */
+            $result = Sms::setTemplateCode($tempCode)->send($phone, $content);
 
             if ($result) {
                 echo '发送成功！';

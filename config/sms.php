@@ -37,5 +37,20 @@ return [
      */
     'template' => [
         'captcha' => env('SMS_TEMPLATE_CAPTCHA', 'captchaTemplate'),
-    ]
+    ],
+
+    /**
+     * TemplateParams
+     * class TemplateParams extends \Seffeng\Sms\Clients\Aliyun\TemplateParams
+     * {
+     *     public static function fetchNameItems()
+     *     {
+     *         return [
+     *             'SMS_19575007' => ['code'],
+     *             'SMS_153055066' => ['code', 'address'],
+     *         ];
+     *     }
+     * }
+     */
+    'templateParamsModel' => Seffeng\Sms\Clients\Aliyun\TemplateParams::class,
 ];
