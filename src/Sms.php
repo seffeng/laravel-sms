@@ -67,11 +67,17 @@ class Sms
     {
         $this->debug = ArrayHelper::getValue($config, 'debug');
         $this->client = ArrayHelper::getValue($config, 'client');
-        $this->accessKeyId = ArrayHelper::getValue($config, 'clients.'. $this->client .'.accessKeyId');
-        $this->accessKeySecret = ArrayHelper::getValue($config, 'clients.'. $this->client .'.accessKeySecret');
-        $this->sdkAppId = ArrayHelper::getValue($config, 'clients.'. $this->client .'.sdkAppId', '');
-        $this->signname = ArrayHelper::getValue($config, 'clients.'. $this->client .'.signname');
-        $templateParamsModel = ArrayHelper::getValue($config, 'clients.'. $this->client .'.templateParamsModel');
+        $client = ArrayHelper::getValue($config, 'clients.'. $this->client);
+
+        if (is_null($client)) {
+            throw new SmsException('The sms client is not supported.'. '['. $this->client .']');
+        }
+
+        $this->accessKeyId = ArrayHelper::getValue($client, 'accessKeyId');
+        $this->accessKeySecret = ArrayHelper::getValue($client, 'accessKeySecret');
+        $this->sdkAppId = ArrayHelper::getValue($client, 'sdkAppId', '');
+        $this->signname = ArrayHelper::getValue($client, 'signname');
+        $templateParamsModel = ArrayHelper::getValue($client, 'templateParamsModel');
 
         if ($templateParamsModel && class_exists($templateParamsModel)) {
             $this->setTemplateParamsModel(new $templateParamsModel);
@@ -80,6 +86,19 @@ class Sms
         if (is_null($this->client) || is_null($this->accessKeyId) || is_null($this->accessKeySecret) || is_null($this->signname)) {
             throw new SmsException('Warning: client, accesskeyid, accesskeysecret, signname cannot be empty.');
         }
+    }
+
+    /**
+     *
+     * @author zxf
+     * @date    2020年6月11日
+     * @param  string $client
+     * @return \Seffeng\LaravelSms\Sms
+     */
+    public function setClient(string $client)
+    {
+        $this->client = $client;
+        return $this;
     }
 
     /**
