@@ -59,6 +59,12 @@ class Sms
 
     /**
      *
+     * @var array
+     */
+    private static $config;
+
+    /**
+     *
      * @author zxf
      * @date    2020年4月18日
      * @param array $config
@@ -86,6 +92,7 @@ class Sms
         if (is_null($this->client) || is_null($this->accessKeyId) || is_null($this->accessKeySecret) || is_null($this->signname)) {
             throw new SmsException('Warning: client, accesskeyid, accesskeysecret, signname cannot be empty.');
         }
+        static::$config = $config;
     }
 
     /**
@@ -95,9 +102,43 @@ class Sms
      * @param  string $client
      * @return \Seffeng\LaravelSms\Sms
      */
-    public function setClient(string $client)
+    protected function setClient(string $client)
     {
         $this->client = $client;
+        return $this;
+    }
+
+    /**
+     *
+     * @author zxf
+     * @date    2020年6月11日
+     * @param  string $client
+     * @return \Seffeng\LaravelSms\Sms
+     */
+    public function loadClient(string $client)
+    {
+        $this->setClient($client);
+        $client = ArrayHelper::getValue(static::$config, 'clients.'. $this->client);
+
+        if (is_null($client)) {
+            throw new SmsException('The sms client is not supported.'. '['. $this->client .']');
+        }
+
+        $this->accessKeyId = ArrayHelper::getValue($client, 'accessKeyId');
+        $this->accessKeySecret = ArrayHelper::getValue($client, 'accessKeySecret');
+        $this->sdkAppId = ArrayHelper::getValue($client, 'sdkAppId', '');
+        $this->signname = ArrayHelper::getValue($client, 'signname');
+        $templateParamsModel = ArrayHelper::getValue($client, 'templateParamsModel');
+
+        if ($templateParamsModel && class_exists($templateParamsModel)) {
+            $this->setTemplateParamsModel(new $templateParamsModel);
+        } else {
+            $this->setTemplateParamsModel(null);
+        }
+
+        if (is_null($this->client) || is_null($this->accessKeyId) || is_null($this->accessKeySecret) || is_null($this->signname)) {
+            throw new SmsException('Warning: client, accesskeyid, accesskeysecret, signname cannot be empty.');
+        }
         return $this;
     }
 
@@ -108,7 +149,7 @@ class Sms
      * @param TemplateParams $templateParamsModel
      * @return \Seffeng\LaravelSms\Sms
      */
-    public function setTemplateParamsModel(TemplateParams $templateParamsModel)
+    public function setTemplateParamsModel(TemplateParams $templateParamsModel = null)
     {
         $this->templateParamsModel = $templateParamsModel;
         return $this;

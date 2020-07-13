@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Facade;
  * @date    2020年4月18日
  * @method static \Seffeng\LaravelSms\Sms setTemplateParamsModel(TemplateParams $templateParamsModel)
  * @method static \Seffeng\LaravelSms\Sms setTemplateCode(string $templateCode)
- * @method static \Seffeng\LaravelSms\Sms setClient(string $client)
+ * @method static \Seffeng\LaravelSms\Sms loadClient(string $client)
  * @method static boolean send($phone, array $content)
  *
  * @see \Seffeng\LaravelSms\Sms
