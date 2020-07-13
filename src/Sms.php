@@ -105,7 +105,6 @@ class Sms
     protected function setClient(string $client)
     {
         $this->client = $client;
-        return $this;
     }
 
     /**
