@@ -71,28 +71,23 @@ class Sms
      */
     public function __construct(array $config)
     {
-        $this->debug = ArrayHelper::getValue($config, 'debug');
         $this->client = ArrayHelper::getValue($config, 'client');
-        $client = ArrayHelper::getValue($config, 'clients.'. $this->client);
-
-        if (is_null($client)) {
-            throw new SmsException('The sms client is not supported.'. '['. $this->client .']');
-        }
-
-        $this->accessKeyId = ArrayHelper::getValue($client, 'accessKeyId');
-        $this->accessKeySecret = ArrayHelper::getValue($client, 'accessKeySecret');
-        $this->sdkAppId = ArrayHelper::getValue($client, 'sdkAppId', '');
-        $this->signname = ArrayHelper::getValue($client, 'signname');
-        $templateParamsModel = ArrayHelper::getValue($client, 'templateParamsModel');
-
-        if ($templateParamsModel && class_exists($templateParamsModel)) {
-            $this->setTemplateParamsModel(new $templateParamsModel);
-        }
-
-        if (is_null($this->client) || is_null($this->accessKeyId) || is_null($this->accessKeySecret) || is_null($this->signname)) {
-            throw new SmsException('Warning: client, accesskeyid, accesskeysecret, signname cannot be empty.');
-        }
         static::$config = $config;
+        $this->loadConfig();
+    }
+
+    /**
+     *
+     * @author zxf
+     * @date    2020年6月11日
+     * @param  string $client
+     * @return \Seffeng\LaravelSms\Sms
+     */
+    public function loadClient(string $client)
+    {
+        $this->setClient($client);
+        $this->loadConfig();
+        return $this;
     }
 
     /**
@@ -110,15 +105,13 @@ class Sms
     /**
      *
      * @author zxf
-     * @date    2020年6月11日
-     * @param  string $client
-     * @return \Seffeng\LaravelSms\Sms
+     * @date   2020年7月16日
+     * @throws SmsException
      */
-    public function loadClient(string $client)
+    protected function loadConfig()
     {
-        $this->setClient($client);
+        $this->debug = ArrayHelper::getValue(static::$config, 'debug');
         $client = ArrayHelper::getValue(static::$config, 'clients.'. $this->client);
-
         if (is_null($client)) {
             throw new SmsException('The sms client is not supported.'. '['. $this->client .']');
         }
@@ -138,7 +131,6 @@ class Sms
         if (is_null($this->client) || is_null($this->accessKeyId) || is_null($this->accessKeySecret) || is_null($this->signname)) {
             throw new SmsException('Warning: client, accesskeyid, accesskeysecret, signname cannot be empty.');
         }
-        return $this;
     }
 
     /**
