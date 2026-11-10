@@ -3,7 +3,7 @@
 namespace Seffeng\LaravelSms;
 
 use Seffeng\Sms\SmsClient;
-use Seffeng\Sms\Helpers\ArrayHelper;
+use Seffeng\ArrHelper\Arr;
 use Seffeng\Sms\Clients\Aliyun\TemplateParams;
 use Seffeng\Sms\Exceptions\SmsException;
 
@@ -11,7 +11,7 @@ class Sms
 {
     /**
      *
-     * @var boolean
+     * @var bool
      */
     private $debug;
 
@@ -66,12 +66,12 @@ class Sms
     /**
      *
      * @author zxf
-     * @date    2020年4月18日
+     * @date   2020年4月18日
      * @param array $config
      */
     public function __construct(array $config)
     {
-        $this->client = ArrayHelper::getValue($config, 'client');
+        $this->client = Arr::getValue($config, 'client');
         static::$config = $config;
         $this->loadConfig();
     }
@@ -79,7 +79,7 @@ class Sms
     /**
      *
      * @author zxf
-     * @date    2020年6月11日
+     * @date   2020年6月11日
      * @param  string $client
      * @return \Seffeng\LaravelSms\Sms
      */
@@ -93,7 +93,7 @@ class Sms
     /**
      *
      * @author zxf
-     * @date    2020年6月11日
+     * @date   2020年6月11日
      * @param  string $client
      * @return \Seffeng\LaravelSms\Sms
      */
@@ -110,17 +110,17 @@ class Sms
      */
     protected function loadConfig()
     {
-        $this->debug = ArrayHelper::getValue(static::$config, 'debug');
-        $client = ArrayHelper::getValue(static::$config, 'clients.'. $this->client);
+        $this->debug = Arr::getValue(static::$config, 'debug');
+        $client = Arr::getValue(static::$config, 'clients.'. $this->client);
         if (is_null($client)) {
             throw new SmsException('The sms client is not supported.'. '['. $this->client .']');
         }
 
-        $this->accessKeyId = ArrayHelper::getValue($client, 'accessKeyId');
-        $this->accessKeySecret = ArrayHelper::getValue($client, 'accessKeySecret');
-        $this->sdkAppId = ArrayHelper::getValue($client, 'sdkAppId', '');
-        $this->signname = ArrayHelper::getValue($client, 'signname');
-        $templateParamsModel = ArrayHelper::getValue($client, 'templateParamsModel');
+        $this->accessKeyId = Arr::getValue($client, 'accessKeyId');
+        $this->accessKeySecret = Arr::getValue($client, 'accessKeySecret');
+        $this->sdkAppId = Arr::getValue($client, 'sdkAppId', '');
+        $this->signname = Arr::getValue($client, 'signname');
+        $templateParamsModel = Arr::getValue($client, 'templateParamsModel');
 
         if ($templateParamsModel && class_exists($templateParamsModel)) {
             $this->setTemplateParamsModel(new $templateParamsModel);
@@ -136,11 +136,11 @@ class Sms
     /**
      *
      * @author zxf
-     * @date    2020年4月18日
-     * @param TemplateParams $templateParamsModel
+     * @date   2020年4月18日
+     * @param  TemplateParams $templateParamsModel
      * @return \Seffeng\LaravelSms\Sms
      */
-    public function setTemplateParamsModel(TemplateParams $templateParamsModel = null)
+    public function setTemplateParamsModel(?TemplateParams $templateParamsModel = null)
     {
         $this->templateParamsModel = $templateParamsModel;
         return $this;
@@ -149,7 +149,7 @@ class Sms
     /**
      *
      * @author zxf
-     * @date    2020年4月18日
+     * @date   2020年4月18日
      * @param string|array $phone
      * @param array $content
      */
@@ -174,7 +174,7 @@ class Sms
     /**
      *
      * @author zxf
-     * @date    2020年4月18日
+     * @date   2020年4月18日
      * @param  string $templateCode
      * @return \Seffeng\LaravelSms\Sms
      */
@@ -187,7 +187,7 @@ class Sms
     /**
      *
      * @author zxf
-     * @date    2019年11月21日
+     * @date   2019年11月21日
      * @return string
      */
     public function getTemplateCode()
@@ -198,8 +198,8 @@ class Sms
     /**
      *
      * @author zxf
-     * @date    2020年4月18日
-     * @return boolean
+     * @date   2020年4月18日
+     * @return bool
      */
     public function getIsDebug()
     {

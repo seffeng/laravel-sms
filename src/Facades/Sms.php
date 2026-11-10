@@ -3,15 +3,16 @@
 namespace Seffeng\LaravelSms\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use Seffeng\Sms\Clients\Aliyun\TemplateParams;
 
 /**
  *
  * @author zxf
- * @date    2020年4月18日
+ * @date   2020年4月18日
  * @method static \Seffeng\LaravelSms\Sms setTemplateParamsModel(TemplateParams $templateParamsModel)
  * @method static \Seffeng\LaravelSms\Sms setTemplateCode(string $templateCode)
  * @method static \Seffeng\LaravelSms\Sms loadClient(string $client)
- * @method static boolean send($phone, array $content)
+ * @method static bool send($phone, array $content)
  *
  * @see \Seffeng\LaravelSms\Sms
  */
